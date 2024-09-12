@@ -10,18 +10,18 @@ app.use(express.json());
 app.get("/playbackvideo", createHandle())
 app.get("/initplayback", createHandle(true))
 
-app.get("/create-token", (req, res) => {
+// app.get("/create-token", (req, res) => {
 
-    const { videoid } = req.query
-    const time = 1000 * 60 * 60
+//     const { videoid } = req.query
+//     const time = 1000 * 60 * 60
 
-    const token = jwt.sign({ videoid }, SECRET_KEY, { expiresIn: '1h', audience: "qs" });
+//     const token = jwt.sign({ videoid }, SECRET_KEY, { expiresIn: '1h', audience: "qs" });
 
-    res.send({
-        token,
-        time
-    })
-})
+//     res.send({
+//         token,
+//         time
+//     })
+// })
 
 app.use("*", (r, e) => e.status(404).send("not found"))
 
