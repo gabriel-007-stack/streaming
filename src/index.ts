@@ -18,7 +18,6 @@ app.get("/create-token", async (req, res) => {
     const expires = new Date(new Date().getTime() + time * 1000) // 1 hora
     const url = await file.getSignedUrl({
         action: 'read',
-        contentType: mineType,
         version: c === "MOBILE" ? 'v2' : "v4",
         expires
     });
