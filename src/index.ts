@@ -20,10 +20,7 @@ app.get("/create-token", async (req, res) => {
         action: 'read',
         contentType: mineType,
         version: c === "MOBILE" ? 'v2' : "v4",
-        expires,
-        extensionHeaders: {
-            "cache-control": 'public, max-age=' + (time)
-        }
+        expires
     });
     res.set('Cache-Control', 'public, max-age=' + (time))
     res.setHeader('Expires', new Date(Date.now() + time * 1000).toUTCString());
