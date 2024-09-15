@@ -11,14 +11,13 @@ app.get("/playbackvideo", createHandle())
 app.get("/initplayback", createHandle(true))
 
 app.get("/create-token", async (req, res) => {
-    const time = 3600
+    const time = 3600 * 24
     const { id, c, mineType = 'video/mp4' } = req.query as unknown as Query;
     const filePath = `${id}.mp4`
     const file = bucket.file(filePath);
     const expires = new Date(new Date().getTime() + time * 1000) // 1 hora
     const url = await file.getSignedUrl({
         action: 'read',
-        version: c === "MOBILE" ? 'v2' : "v4",
         expires
     });
     res.set('Cache-Control', 'public, max-age=' + (time))
