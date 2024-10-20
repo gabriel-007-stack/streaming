@@ -50,7 +50,7 @@ export const createHandle = (isInit = false) => {
             const contentRange = response.headers.get('Content-Range') || '';
             const contentType = response.headers.get('Content-Type') || 'application/octet-stream';
 
-            res.setHeader('cache-control', 'private, max-age=21296');
+            res.setHeader('cache-control', 'private, max-age=0');
             if (!isDisabledHeader206) {
                 res.setHeader('Content-Range', contentRange);
                 res.setHeader('Content-Type', contentType);
