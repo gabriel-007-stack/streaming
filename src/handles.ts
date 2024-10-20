@@ -16,16 +16,16 @@ const max = 4 * 1024 * 1024
 export const createHandle = (isInit = false) => {
     return async function handleRequest(req: R, res: Response) {
 
-        let { rn, expire, source, rbuf = 0, mime, ip, ei = "", clen } = req.query as Record<string, string>
+        let { rn, expire, source, rbuf = 0, mime, ip, ei = "", clen, dur, range: X } = req.query as Record<string, string>
 
 
 
 
         const range = String(req.query.range ?? req.headers['range']?.replace(/^bytes?=/, ''));
-        const isDisabledHeader206 = !!req.query.range
+        const isDisabledHeader206 = !!X
         const [start, end] = /^(\d+)-(\d+)?$/.test(range) ? range.split('-') : ['0', String(max)];
         const startByte = parseInt(start, 10);
-        const endByte = end ? Math.min(+start + 4 * 1024 * 1024, parseInt(end, 10)) : 1 * 1024 * 1024;
+        const endByte = end ? Math.min(+start + 4 * 1024 * 1024, parseInt("" + end, 10)) : 1 * 1024 * 1024;
 
         if (isNaN(startByte) || (endByte !== null && isNaN(endByte))) {
             return res.sendStatus(400); // Bad Request
@@ -47,7 +47,7 @@ export const createHandle = (isInit = false) => {
             }
 
             const contentLength = response.headers.get('Content-Length') || '0';
-            const contentRange = response.headers.get('Content-Range') || '';
+            const contentRange = response.headers.get('Content-Range') || (+contentLength > 4 ? headers['Range'] + "/" + contentLength : "");
             const contentType = response.headers.get('Content-Type') || 'application/octet-stream';
 
             res.setHeader('cache-control', 'private, max-age=0');
